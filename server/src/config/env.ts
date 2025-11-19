@@ -4,7 +4,16 @@ dotenv.config();
 
 export const config = {
   port: parseInt(process.env.PORT || '3000', 10),
-  mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/navayuga',
+  mongo: {
+    host: process.env.MONGO_HOST || 'localhost',
+    port: parseInt(process.env.MONGO_PORT || '27017', 10),
+    username: process.env.MONGO_ROOT_USERNAME || 'admin',
+    password: process.env.MONGO_ROOT_PASSWORD || 'admin123',
+    database: process.env.MONGO_DATABASE || 'navayuga',
+    // For backward compatibility, also support MONGO_URI if provided
+    uri: process.env.MONGO_URI
+  },
+  mongoUri: process.env.MONGO_URI || '', // Will be constructed from individual components if not provided
   jwtSecret: process.env.JWT_SECRET || 'navayuga_jwt_secret_key',
   aws: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',

@@ -4,6 +4,7 @@ import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface SHG {
   id: string;
+  shgNumber: string;
   shgName: string;
   shgAddress: string;
   savingAccountNumber: string;

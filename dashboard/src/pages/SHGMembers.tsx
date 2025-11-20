@@ -608,7 +608,7 @@ const SHGMembers: React.FC = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Aadhar Card Front *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Aadhar Card Front (Optional)</label>
                       <input
                         ref={(el) => { fileInputRefs.current['aadharCardFront'] = el; }}
                         type="file"
@@ -624,7 +624,7 @@ const SHGMembers: React.FC = () => {
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Aadhar Card Back *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Aadhar Card Back (Optional)</label>
                       <input
                         ref={(el) => { fileInputRefs.current['aadharCardBack'] = el; }}
                         type="file"
@@ -640,7 +640,7 @@ const SHGMembers: React.FC = () => {
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">PAN Card *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">PAN Card (Optional)</label>
                       <input
                         ref={(el) => { fileInputRefs.current['panCard'] = el; }}
                         type="file"
@@ -656,7 +656,7 @@ const SHGMembers: React.FC = () => {
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Void ID Card *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Void ID Card (Optional)</label>
                       <input
                         ref={(el) => { fileInputRefs.current['voidIdCard'] = el; }}
                         type="file"
@@ -700,7 +700,6 @@ const SHGMembers: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!formData.aadharCardFront || !formData.aadharCardBack || !formData.panCard || !formData.voidIdCard}
                     className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {selectedMember ? 'Update' : 'Create'}

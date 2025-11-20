@@ -168,7 +168,7 @@ const LinkageManagement: React.FC = () => {
         {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center">
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 backdrop-blur-sm z-[101]" onClick={() => setIsModalOpen(false)}></div>
+            <div className="fixed inset-0 border-2 border-gray-400 bg-opacity-75 backdrop-blur-sm z-[101]" onClick={() => setIsModalOpen(false)}></div>
             <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md z-[102]">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
                 {selectedLinkage ? 'Edit Linkage' : 'Add Linkage'}

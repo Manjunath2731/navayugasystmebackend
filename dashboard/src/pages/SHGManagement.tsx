@@ -208,6 +208,7 @@ const SHGManagement: React.FC = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SHG Number</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SHG Name</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Field Officer</th>
@@ -219,6 +220,9 @@ const SHGManagement: React.FC = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {shgs.map((shg) => (
                     <tr key={shg.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-indigo-600">{shg.shgNumber}</div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">{shg.shgName}</div>
                         <div className="text-sm text-gray-500">{shg.shgAddress}</div>

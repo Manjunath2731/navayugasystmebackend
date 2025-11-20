@@ -18,7 +18,7 @@ const DeleteTickets: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<CreateDeleteTicketInput>({
     ticketType: 'shg',
-    entityId: '',
+    shgNumber: '',
     reason: '',
   });
 
@@ -40,7 +40,7 @@ const DeleteTickets: React.FC = () => {
   const handleCreateTicket = () => {
     setFormData({
       ticketType: 'shg',
-      entityId: '',
+      shgNumber: '',
       reason: '',
     });
     setIsModalOpen(true);
@@ -285,7 +285,14 @@ const DeleteTickets: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Type *</label>
                   <select
                     value={formData.ticketType}
-                    onChange={(e) => setFormData({ ...formData, ticketType: e.target.value as 'shg' | 'shg_member' })}
+                    onChange={(e) => {
+                      const newType = e.target.value as 'shg' | 'shg_member';
+                      if (newType === 'shg') {
+                        setFormData({ ticketType: 'shg', shgNumber: '', reason: formData.reason || '' });
+                      } else {
+                        setFormData({ ticketType: 'shg_member', name: '', reason: formData.reason || '' });
+                      }
+                    }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                   >
@@ -293,17 +300,34 @@ const DeleteTickets: React.FC = () => {
                     <option value="shg_member">SHG Member</option>
                   </select>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Entity ID *</label>
-                  <input
-                    type="text"
-                    value={formData.entityId}
-                    onChange={(e) => setFormData({ ...formData, entityId: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    placeholder="Enter SHG ID or Member ID"
-                    required
-                  />
-                </div>
+                {formData.ticketType === 'shg' ? (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">SHG Number *</label>
+                    <input
+                      type="text"
+                      value={formData.shgNumber}
+                      onChange={(e) => setFormData({ ...formData, shgNumber: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter SHG number (e.g., NAV20250001)"
+                      required
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Member Name *</label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter member name"
+                      required
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Note: If multiple members have the same name, please use a more specific identifier.
+                    </p>
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Reason (Optional)</label>
                   <textarea

@@ -29,11 +29,17 @@ export interface DeleteTicket {
   updatedAt: string;
 }
 
-export interface CreateDeleteTicketInput {
-  ticketType: TicketType;
-  entityId: string;
-  reason?: string;
-}
+export type CreateDeleteTicketInput =
+  | {
+      ticketType: 'shg';
+      shgNumber: string;
+      reason?: string;
+    }
+  | {
+      ticketType: 'shg_member';
+      name: string;
+      reason?: string;
+    };
 
 export interface UpdateDeleteTicketInput {
   status: 'approved' | 'rejected';

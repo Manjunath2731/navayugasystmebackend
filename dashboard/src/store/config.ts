@@ -62,6 +62,11 @@ export const API_ENDPOINTS = {
     PASSWORD: '/api/settings/password',
     AVATAR: '/api/settings/avatar',
   },
+  
+  // Files
+  FILES: {
+    UPLOAD: '/api/files/upload',
+  },
 } as const;
 
 /**

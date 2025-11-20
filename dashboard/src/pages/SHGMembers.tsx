@@ -12,6 +12,7 @@ import {
 import type { RootState, AppDispatch } from '../store/store';
 import type { SHGMember, CreateSHGMemberInput, UpdateSHGMemberInput, MemberRole } from '../store/shgMemberSlice';
 import type { SHG } from '../store/shgSlice';
+import { getApiUrl, API_ENDPOINTS } from '../store/config';
 
 const SHGMembers: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,7 +55,7 @@ const SHGMembers: React.FC = () => {
           if (!token) return;
 
           // Fetch all SHGs with a high limit
-          const response = await fetch('http://localhost:3000/api/shgs?page=1&limit=1000', {
+          const response = await fetch(getApiUrl(`${API_ENDPOINTS.SHGS}?page=1&limit=1000`), {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
@@ -112,7 +113,7 @@ const SHGMembers: React.FC = () => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch('http://localhost:3000/api/files/upload', {
+    const response = await fetch(getApiUrl(API_ENDPOINTS.FILES.UPLOAD), {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

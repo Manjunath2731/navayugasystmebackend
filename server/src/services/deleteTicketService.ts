@@ -41,26 +41,37 @@ export const createDeleteTicket = async (
     throw new UnauthorizedError('Only front desk can create delete tickets');
   }
 
-  // Validate entity exists
+  // Validate entity exists and find the entity ID
+  let entityId: mongoose.Types.ObjectId;
   let entityName = '';
+
   if (input.ticketType === TicketType.SHG) {
-    const shg = await SHG.findById(input.entityId);
+    // Find SHG by shgNumber
+    const shg = await SHG.findOne({ shgNumber: input.shgNumber });
     if (!shg) {
-      throw new NotFoundError('SHG not found');
+      throw new NotFoundError(`SHG with number ${input.shgNumber} not found`);
     }
+    entityId = shg._id as mongoose.Types.ObjectId;
     entityName = `${shg.shgNumber} - ${shg.shgName}`;
   } else if (input.ticketType === TicketType.SHG_MEMBER) {
-    const member = await SHGMember.findById(input.entityId);
-    if (!member) {
-      throw new NotFoundError('SHG member not found');
+    // Find SHG member by name
+    const members = await SHGMember.find({ name: input.name });
+    if (members.length === 0) {
+      throw new NotFoundError(`SHG member with name "${input.name}" not found`);
     }
-    entityName = member.name;
+    if (members.length > 1) {
+      throw new ValidationError(`Multiple SHG members found with name "${input.name}". Please use a more specific identifier.`);
+    }
+    entityId = members[0]._id as mongoose.Types.ObjectId;
+    entityName = members[0].name;
+  } else {
+    throw new ValidationError('Invalid ticket type');
   }
 
   const ticket = new DeleteTicket({
     requestedBy: new mongoose.Types.ObjectId(currentUserId),
     ticketType: input.ticketType,
-    entityId: new mongoose.Types.ObjectId(input.entityId),
+    entityId: entityId,
     reason: input.reason,
     status: TicketStatus.PENDING,
   });

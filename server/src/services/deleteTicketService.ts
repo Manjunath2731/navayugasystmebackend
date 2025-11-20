@@ -48,7 +48,7 @@ export const createDeleteTicket = async (
     if (!shg) {
       throw new NotFoundError('SHG not found');
     }
-    entityName = shg.shgName;
+    entityName = `${shg.shgNumber} - ${shg.shgName}`;
   } else if (input.ticketType === TicketType.SHG_MEMBER) {
     const member = await SHGMember.findById(input.entityId);
     if (!member) {
@@ -111,7 +111,7 @@ export const getAllDeleteTickets = async (
     let entityName = '';
     if (ticket.ticketType === TicketType.SHG) {
       const shg = await SHG.findById(ticket.entityId);
-      entityName = shg?.shgName || '';
+      entityName = shg ? `${shg.shgNumber} - ${shg.shgName}` : '';
     } else if (ticket.ticketType === TicketType.SHG_MEMBER) {
       const member = await SHGMember.findById(ticket.entityId);
       entityName = member?.name || '';
@@ -172,7 +172,7 @@ export const getDeleteTicketById = async (
   let entityName = '';
   if (ticket.ticketType === TicketType.SHG) {
     const shg = await SHG.findById(ticket.entityId);
-    entityName = shg?.shgName || '';
+    entityName = shg ? `${shg.shgNumber} - ${shg.shgName}` : '';
   } else if (ticket.ticketType === TicketType.SHG_MEMBER) {
     const member = await SHGMember.findById(ticket.entityId);
     entityName = member?.name || '';
@@ -237,9 +237,12 @@ export const updateDeleteTicket = async (
   // If approved, delete the entity
   if (ticket.status === TicketStatus.APPROVED) {
     if (ticket.ticketType === TicketType.SHG) {
+      const shg = await SHG.findById(ticket.entityId);
+      const shgNumber = shg?.shgNumber || 'SHG';
       // Delete all members first
       await SHGMember.deleteMany({ shgId: ticket.entityId });
       await SHG.findByIdAndDelete(ticket.entityId);
+      console.log(`SHG ${shgNumber} deleted via approved ticket`);
     } else if (ticket.ticketType === TicketType.SHG_MEMBER) {
       await SHGMember.findByIdAndDelete(ticket.entityId);
     }

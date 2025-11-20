@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ISHG extends Document {
+  shgNumber: string; // Unique SHG number format: NAV{YYYY}{0001}
   shgName: string;
   shgAddress: string;
   savingAccountNumber: string;
@@ -20,6 +21,13 @@ export interface ISHG extends Document {
 }
 
 const SHGSchema: Schema = new Schema({
+  shgNumber: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    index: true
+  },
   shgName: {
     type: String,
     required: true,

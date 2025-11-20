@@ -210,14 +210,14 @@ export const updateSHGMember = async (
   return getSHGMemberById({ id: input.id }, currentUserRole);
 };
 
-// Delete SHG Member (owner only, or front_desk via delete ticket)
+// Delete SHG Member (owner and front_desk can delete directly)
 export const deleteSHGMember = async (
   input: SHGMemberIdInput,
   currentUserRole: UserRole
 ): Promise<{ message: string }> => {
-  // Only owner can directly delete
-  if (currentUserRole !== UserRole.OWNER) {
-    throw new UnauthorizedError('Only owners can delete SHG members. Front desk must create a delete ticket.');
+  // Owner and front_desk can directly delete (no ticket required)
+  if (currentUserRole !== UserRole.OWNER && currentUserRole !== UserRole.FRONT_DESK) {
+    throw new UnauthorizedError('Only owners and front desk can delete SHG members');
   }
 
   const member = await SHGMember.findById(input.id);

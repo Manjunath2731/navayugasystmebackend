@@ -6,11 +6,11 @@ export const createSHGMemberSchema = z.object({
   name: z.string().min(1, { message: 'Member name is required' }),
   phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
   role: z.nativeEnum(MemberRole, { message: 'Invalid member role' }),
-  aadharCardFront: z.string().min(1, { message: 'Aadhar card front is required' }),
-  aadharCardBack: z.string().min(1, { message: 'Aadhar card back is required' }),
-  panCard: z.string().min(1, { message: 'PAN card is required' }),
-  voidIdCard: z.string().min(1, { message: 'Void ID card is required' }),
-  homeRentalAgreement: z.string().optional(),
+  aadharCardFront: z.string().optional().default(''),
+  aadharCardBack: z.string().optional().default(''),
+  panCard: z.string().optional().default(''),
+  voidIdCard: z.string().optional().default(''),
+  homeRentalAgreement: z.string().optional().default(''),
 });
 
 export const updateSHGMemberSchema = createSHGMemberSchema.partial().omit({ shgId: true });

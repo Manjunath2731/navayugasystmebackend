@@ -27,8 +27,8 @@ router.get('/:id', getSHGMemberByIdHandler);
 // Update SHG member (owner and front_desk)
 router.put('/:id', requireAnyRole(UserRole.OWNER, UserRole.FRONT_DESK), updateSHGMemberHandler);
 
-// Delete SHG member (owner only, front_desk must use delete ticket)
-router.delete('/:id', requireOwner(), deleteSHGMemberHandler);
+// Delete SHG member (owner and front_desk can delete directly)
+router.delete('/:id', requireAnyRole(UserRole.OWNER, UserRole.FRONT_DESK), deleteSHGMemberHandler);
 
 export default router;
 

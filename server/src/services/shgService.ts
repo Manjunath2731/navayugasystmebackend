@@ -3,9 +3,11 @@ import { NotFoundError, UnauthorizedError, ValidationError } from '../utils/erro
 import { CreateSHGInput, UpdateSHGInput, SHGIdInput } from '../validation/shgValidation';
 import { UserRole, IUser } from '../models/User';
 import mongoose from 'mongoose';
+import { generateUniqueSHGNumber } from '../utils/shgNumberGenerator';
 
 export interface SHGResponse {
   id: string;
+  shgNumber: string;
   shgName: string;
   shgAddress: string;
   savingAccountNumber: string;
@@ -62,7 +64,11 @@ export const createSHG = async (
     throw new NotFoundError('Linkage not found');
   }
 
+  // Generate unique SHG number
+  const shgNumber = await generateUniqueSHGNumber();
+
   const shg = new SHG({
+    shgNumber,
     shgName: input.shgName,
     shgAddress: input.shgAddress,
     savingAccountNumber: input.savingAccountNumber,
@@ -83,6 +89,7 @@ export const createSHG = async (
 
   return {
     id: (shg._id as any).toString(),
+    shgNumber: shg.shgNumber,
     shgName: shg.shgName,
     shgAddress: shg.shgAddress,
     savingAccountNumber: shg.savingAccountNumber,
@@ -145,6 +152,7 @@ export const getAllSHGs = async (
   return {
     shgs: shgs.map(shg => ({
       id: (shg._id as any).toString(),
+      shgNumber: shg.shgNumber,
       shgName: shg.shgName,
       shgAddress: shg.shgAddress,
       savingAccountNumber: shg.savingAccountNumber,
@@ -205,6 +213,7 @@ export const getSHGById = async (
 
   return {
     id: (shg._id as any).toString(),
+    shgNumber: shg.shgNumber,
     shgName: shg.shgName,
     shgAddress: shg.shgAddress,
     savingAccountNumber: shg.savingAccountNumber,
@@ -292,14 +301,16 @@ export const updateSHG = async (
   return getSHGById({ id: input.id }, currentUserRole);
 };
 
-// Delete SHG (owner only, or front_desk via delete ticket)
+// Delete SHG (owner only, all others must create delete ticket)
 export const deleteSHG = async (
   input: SHGIdInput,
   currentUserRole: UserRole
 ): Promise<{ message: string }> => {
   // Only owner can directly delete
   if (currentUserRole !== UserRole.OWNER) {
-    throw new UnauthorizedError('Only owners can delete SHG. Front desk must create a delete ticket.');
+    const shg = await SHG.findById(input.id);
+    const shgNumber = shg?.shgNumber || 'SHG';
+    throw new UnauthorizedError(`Only owners can delete SHG. Please create a delete ticket for ${shgNumber}.`);
   }
 
   const shg = await SHG.findById(input.id);
@@ -307,12 +318,14 @@ export const deleteSHG = async (
     throw new NotFoundError('SHG not found');
   }
 
+  const shgNumber = shg.shgNumber;
+
   // Delete all members first
   const SHGMember = (await import('../models/SHGMember')).default;
   await SHGMember.deleteMany({ shgId: shg._id });
 
   await SHG.findByIdAndDelete(input.id);
 
-  return { message: 'SHG deleted successfully' };
+  return { message: `SHG ${shgNumber} deleted successfully` };
 };
 

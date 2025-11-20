@@ -8,6 +8,7 @@ import SHG from '../src/models/SHG';
 import SHGMember, { MemberRole } from '../src/models/SHGMember';
 import MonthlyRepayment, { PaymentMethod, PaymentType } from '../src/models/MonthlyRepayment';
 import { connectDatabase } from '../src/config/database';
+import { generateUniqueSHGNumber } from '../src/utils/shgNumberGenerator';
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '../.env') });
@@ -204,7 +205,11 @@ async function importSHGData() {
         const branch = row['BRANCH']?.toString().trim() || 'N/A';
         const shgAddress = row['ADDRESS']?.toString().trim() || 'N/A';
 
+        // Generate unique SHG number
+        const shgNumber = await generateUniqueSHGNumber();
+
         const shg = new SHG({
+          shgNumber,
           shgName: shgName,
           shgAddress: shgAddress,
           savingAccountNumber: savingAccountNumber,
@@ -223,7 +228,7 @@ async function importSHGData() {
 
         await shg.save();
         shgCount++;
-        console.log(`✓ Created SHG: ${shgName}`);
+        console.log(`✓ Created SHG: ${shgNumber} - ${shgName}`);
 
         // Create Pratini1
         const pratini1Name = row['PRATHINIDI 1']?.toString().trim();

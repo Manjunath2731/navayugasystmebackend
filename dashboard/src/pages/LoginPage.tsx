@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../store/authSlice';
 import type { RootState, AppDispatch } from '../store/store';
+import logoImage from '../assets/images/logo.png';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -67,7 +68,7 @@ const LoginPage: React.FC = () => {
           <div className="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-8 text-center">
             <div className="mx-auto flex items-center justify-center">
                 <img 
-                  src="/src/assets/images/logo.png" 
+                  src={logoImage} 
                   alt="Navayuga Logo" 
                   className="w-16 h-16 rounded-full object-contain"
                 />

@@ -103,7 +103,7 @@ const SHGMembers: React.FC = () => {
     };
   }, [isDropdownOpen]);
 
-  const handleFileUpload = async (file: File, docType: string): Promise<string> => {
+  const handleFileUpload = async (file: File, _docType: string): Promise<string> => {
     const token = localStorage.getItem('token');
     if (!token) {
       throw new Error('No authentication token found');

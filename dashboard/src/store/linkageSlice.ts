@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface Linkage {
   id: string;
@@ -46,7 +47,7 @@ export const fetchLinkages = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/linkages', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.LINKAGES), {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -74,7 +75,7 @@ export const createLinkage = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/linkages', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.LINKAGES), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -105,7 +106,7 @@ export const updateLinkage = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/linkages/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.LINKAGES}/${id}`), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -136,7 +137,7 @@ export const deleteLinkage = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/linkages/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.LINKAGES}/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

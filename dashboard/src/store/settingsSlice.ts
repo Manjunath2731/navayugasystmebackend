@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface UpdateProfileInput {
   firstName?: string;
@@ -40,7 +40,7 @@ export const updateProfile = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/settings/profile', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.SETTINGS.PROFILE), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -72,7 +72,7 @@ export const changePassword = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/settings/password', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.SETTINGS.PASSWORD), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -111,7 +111,7 @@ export const uploadAvatar = createAsyncThunk(
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:3000/api/settings/avatar', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.SETTINGS.AVATAR), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -142,7 +142,7 @@ export const deleteAvatar = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/settings/avatar', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.SETTINGS.AVATAR), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -13,6 +13,7 @@ const buildMongoUri = (): string => {
 export const connectDatabase = async (): Promise<void> => {
   try {
     const mongoUri = buildMongoUri();
+    console.log('\x1b[36m%s\x1b[0m', `Mongo URI: ${mongoUri}`);
     console.log('\x1b[36m%s\x1b[0m', `Connecting to MongoDB at ${config.mongo.host}:${config.mongo.port}...`);
     await mongoose.connect(mongoUri);
     console.log('\x1b[32m%s\x1b[0m', '✓ Database connected successfully');

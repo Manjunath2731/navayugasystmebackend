@@ -13,8 +13,6 @@ import { fetchLinkages } from '../store/linkageSlice';
 import { fetchEmployees } from '../store/employeeSlice';
 import type { RootState, AppDispatch } from '../store/store';
 import type { SHG, CreateSHGInput, UpdateSHGInput } from '../store/shgSlice';
-import type { Linkage } from '../store/linkageSlice';
-import type { Employee } from '../store/employeeSlice';
 
 const SHGManagement: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -80,6 +78,7 @@ const SHGManagement: React.FC = () => {
       branch: '',
       loanSanctionAmount: 0,
       numberOfMonths: 12,
+      monthlyRepaymentAmount: 0,
       fixedDeposit: 0,
       linkageId: '',
       numberOfMembers: 0,

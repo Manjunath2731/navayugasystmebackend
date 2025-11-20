@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export type TicketType = 'shg' | 'shg_member';
 export type TicketStatus = 'pending' | 'approved' | 'rejected';
@@ -65,7 +66,7 @@ export const fetchDeleteTickets = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/delete-tickets', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.DELETE_TICKETS), {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -93,7 +94,7 @@ export const createDeleteTicket = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/delete-tickets', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.DELETE_TICKETS), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -124,7 +125,7 @@ export const updateDeleteTicket = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/delete-tickets/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.DELETE_TICKETS}/${id}`), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

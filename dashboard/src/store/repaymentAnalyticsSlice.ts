@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface UpcomingRepayment {
   shgId: string;
@@ -50,13 +51,11 @@ const initialState: RepaymentAnalyticsState = {
   error: null,
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 export const fetchRepaymentAnalytics = createAsyncThunk(
   'repaymentAnalytics/fetch',
   async () => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/repayment-analytics`, {
+    const response = await fetch(getApiUrl(API_ENDPOINTS.REPAYMENT_ANALYTICS), {
       headers: {
         'Authorization': `Bearer ${token}`,
       },

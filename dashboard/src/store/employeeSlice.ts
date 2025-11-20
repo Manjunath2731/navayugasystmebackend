@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface Employee {
   id: string;
@@ -68,7 +69,7 @@ export const fetchEmployees = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/users', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.USERS), {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -99,7 +100,7 @@ export const createEmployee = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/users', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.USERS), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -131,7 +132,7 @@ export const updateEmployee = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.USERS}/${id}`), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -163,7 +164,7 @@ export const deleteEmployee = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.USERS}/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

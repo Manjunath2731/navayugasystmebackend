@@ -8,7 +8,7 @@ import {
   clearError,
 } from '../store/deleteTicketSlice';
 import type { RootState, AppDispatch } from '../store/store';
-import type { DeleteTicket, CreateDeleteTicketInput } from '../store/deleteTicketSlice';
+import type { CreateDeleteTicketInput } from '../store/deleteTicketSlice';
 
 const DeleteTickets: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -101,7 +101,6 @@ const DeleteTickets: React.FC = () => {
   }
 
   const pendingTickets = tickets.filter(t => t.status === 'pending');
-  const processedTickets = tickets.filter(t => t.status !== 'pending');
 
   return (
     <DashboardLayout>

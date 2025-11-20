@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface SHG {
   id: string;
@@ -19,6 +20,7 @@ export interface SHG {
   branch: string;
   loanSanctionAmount: number;
   numberOfMonths: number;
+  monthlyRepaymentAmount: number;
   fixedDeposit: number;
   linkageId: string;
   linkage?: {
@@ -59,6 +61,7 @@ export interface UpdateSHGInput {
   branch?: string;
   loanSanctionAmount?: number;
   numberOfMonths?: number;
+  monthlyRepaymentAmount?: number;
   fixedDeposit?: number;
   linkageId?: string;
   numberOfMembers?: number;
@@ -100,7 +103,7 @@ export const fetchSHGs = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/shgs?page=${page}&limit=${limit}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.SHGS}?page=${page}&limit=${limit}`), {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -131,7 +134,7 @@ export const createSHG = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/shgs', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.SHGS), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -162,7 +165,7 @@ export const updateSHG = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/shgs/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.SHGS}/${id}`), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -193,7 +196,7 @@ export const deleteSHG = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/shgs/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.SHGS}/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

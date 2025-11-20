@@ -13,7 +13,6 @@ import {
 import { fetchSHGs } from '../store/shgSlice';
 import type { RootState, AppDispatch } from '../store/store';
 import type { MonthlyRepayment, CreateMonthlyRepaymentInput } from '../store/monthlyRepaymentSlice';
-import type { SHG } from '../store/shgSlice';
 
 const MonthlyRepaymentEntry: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

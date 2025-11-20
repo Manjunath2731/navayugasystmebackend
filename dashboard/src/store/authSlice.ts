@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export interface User {
   id: string;
@@ -33,7 +34,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.LOGIN), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ export const fetchProfile = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
       
-      const response = await fetch('http://localhost:3000/api/auth/profile', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.PROFILE), {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -103,7 +104,7 @@ export const logout = createAsyncThunk(
         return null; // No token to logout with
       }
       
-      const response = await fetch('http://localhost:3000/api/auth/logout', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.LOGOUT), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export type MemberRole = 'pratini1' | 'pratini2' | 'member';
 
@@ -65,7 +66,7 @@ const getAuthToken = (): string | null => {
 
 export const fetchSHGMembers = createAsyncThunk(
   'shgMember/fetchSHGMembers',
-  async (shgId?: string, { rejectWithValue }) => {
+  async (shgId: string | undefined, { rejectWithValue }) => {
     try {
       const token = getAuthToken();
       if (!token) {
@@ -73,8 +74,8 @@ export const fetchSHGMembers = createAsyncThunk(
       }
 
       const url = shgId 
-        ? `http://localhost:3000/api/shg-members?shgId=${shgId}`
-        : 'http://localhost:3000/api/shg-members';
+        ? getApiUrl(`${API_ENDPOINTS.SHG_MEMBERS}?shgId=${shgId}`)
+        : getApiUrl(API_ENDPOINTS.SHG_MEMBERS);
 
       const response = await fetch(url, {
         headers: {
@@ -104,7 +105,7 @@ export const createSHGMember = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:3000/api/shg-members', {
+      const response = await fetch(getApiUrl(API_ENDPOINTS.SHG_MEMBERS), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -135,7 +136,7 @@ export const updateSHGMember = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/shg-members/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.SHG_MEMBERS}/${id}`), {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -166,7 +167,7 @@ export const deleteSHGMember = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:3000/api/shg-members/${id}`, {
+      const response = await fetch(getApiUrl(`${API_ENDPOINTS.SHG_MEMBERS}/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

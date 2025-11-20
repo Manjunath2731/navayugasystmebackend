@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getApiUrl, API_ENDPOINTS } from './config';
 
 export const PaymentMethod = {
   UPI: 'upi',
@@ -61,15 +62,13 @@ const initialState: MonthlyRepaymentState = {
   error: null,
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 export const fetchMonthlyRepayments = createAsyncThunk(
   'monthlyRepayments/fetchAll',
   async (shgId?: string) => {
     const token = localStorage.getItem('token');
     const url = shgId 
-      ? `${API_BASE_URL}/api/monthly-repayments?shgId=${shgId}`
-      : `${API_BASE_URL}/api/monthly-repayments`;
+      ? getApiUrl(`${API_ENDPOINTS.MONTHLY_REPAYMENTS}?shgId=${shgId}`)
+      : getApiUrl(API_ENDPOINTS.MONTHLY_REPAYMENTS);
     
     const response = await fetch(url, {
       headers: {
@@ -91,7 +90,7 @@ export const createMonthlyRepayment = createAsyncThunk(
   'monthlyRepayments/create',
   async (input: CreateMonthlyRepaymentInput) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/monthly-repayments`, {
+    const response = await fetch(getApiUrl(API_ENDPOINTS.MONTHLY_REPAYMENTS), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +113,7 @@ export const updateMonthlyRepayment = createAsyncThunk(
   'monthlyRepayments/update',
   async ({ id, input }: { id: string; input: UpdateMonthlyRepaymentInput }) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/monthly-repayments/${id}`, {
+    const response = await fetch(getApiUrl(`${API_ENDPOINTS.MONTHLY_REPAYMENTS}/${id}`), {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -137,7 +136,7 @@ export const deleteMonthlyRepayment = createAsyncThunk(
   'monthlyRepayments/delete',
   async (id: string) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/monthly-repayments/${id}`, {
+    const response = await fetch(getApiUrl(`${API_ENDPOINTS.MONTHLY_REPAYMENTS}/${id}`), {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

@@ -1,12 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import RepaymentAnalytics from '../components/RepaymentAnalytics';
-import type { RootState } from '../store/store';
 
 const FrontDeskDashboard: React.FC = () => {
-  const auth = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   return (
